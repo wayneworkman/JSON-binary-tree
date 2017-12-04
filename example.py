@@ -13,14 +13,8 @@ decimalPlaces = 4
 
 populationSize = 100
 
-
-
 inputs = ['111','222','333','444','555','666']
-
-
 expectedOutput = 1.21
-
-
 
 keys = []
 for i in ('+','-','*','/','('):
@@ -31,7 +25,7 @@ for i in range(40,57):
     digits.append(str(chr(i)))
 
 def randomNumber():
-    return random.uniform(0,10)
+    return random.uniform(0,100)
 
 def randomDecimal():
     if randomBool():
@@ -75,7 +69,6 @@ def iterate(object):
     else:
         return str(object)
 
-
 def evaluate(math):
     try:
         return eval(math)
@@ -101,20 +94,17 @@ def generatePopulation(population=None):
                 break
     return population
 
-
 def gradeAnswer(answer):
     if answer > expectedOutput:
         return answer - expectedOutput
     else:
         return expectedOutput - answer
 
-
 def gradePopulation(thePopulation):
     for item in thePopulation:
         if 'grade' not in item:
             item['grade'] = gradeAnswer(item['answer'])
     return thePopulation
-
 
 def getGradeAverage(thePopulation):
     x = 0
@@ -134,23 +124,31 @@ def getObjectDepth(object=None,depth=0):
         depth = depth + 1
         getObjectDepth(item,depth)
 
-
-
-
-
 def matePopulation(thePopulation):
     while len(thePopulation) < populationSize:
-        
+        leftParent = random.choice(thePopulation)['tree']
+        rightParent = random.choice(thePopulation)['tree']
+        child = {}
+        # Get left half.
 
+        # Get right half.
+
+
+
+        answer = evaluate(iterate(child))
+        if answer != False:
+            child['tree'] = child
+            child['answer'] = answer
+            thePopulation.append(child)
 
 
 while True:
     population = generatePopulation()
     population = gradePopulation(population)
     average = getGradeAverage(population)
-    print 'Average population score: ' + str(getGradeAverage(population))
+    print 'Average score: ' + str(getGradeAverage(population))
     population = removeBelowAverage(thePopulation=population,theAverage=average)
-
+    population = matePopulation(population)
 
 
 
