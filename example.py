@@ -30,6 +30,9 @@ digits = []
 for i in range(40,57):
     digits.append(str(chr(i)))
 
+def randomNumber():
+    return random.uniform(0,10)
+
 def randomDecimal():
     if randomBool():
         return round(random.uniform(decimalMinimum,decimalMaximum),decimalPlaces)
@@ -125,6 +128,20 @@ def removeBelowAverage(thePopulation=None,theAverage=None):
         if item['grade'] < theAverage:
             thePopulation.remove(item)
     return thePopulation
+
+def getObjectDepth(object=None,depth=0):
+    for item in object:
+        depth = depth + 1
+        getObjectDepth(item,depth)
+
+
+
+
+
+def matePopulation(thePopulation):
+    while len(thePopulation) < populationSize:
+        
+
 
 
 while True:
