@@ -6,27 +6,28 @@ import decimal
 keys = []
 for i in ('+','-','*','/'):
     keys.append(i)
-keyLength = len(keys) - 1
 
 digits = []
 for i in range(40,57):
     digits.append(str(chr(i)))
-digitLength = len(digits) - 1
 
 def randomDecimal():
-    return decimal.Decimal(str(random.random()))
+    return round(random.uniform(-10,10),4)
 
 def assignKey():
-    my_list = [True] * 90 + [False] * 10
+    my_list = [True] * 50 + [False] * 50
     return random.choice(my_list)
 
 def fillSpot():
-    if assignKey:
+    if assignKey():
+        tmp = {}
         key = random.choice(keys)
-        object[key] = fillSpot
-        return object
+        tmp[key] = []
+        tmp[key].append(fillSpot())
+        tmp[key].append(fillSpot())
+        return tmp
     else:
-        return randomDecimal
+        return randomDecimal()
 
 def iterate(object):
     if isinstance(object,dict):
@@ -37,12 +38,16 @@ def iterate(object):
     else:
         return str(object)
 
-object = fillSpot
 
+object = fillSpot()
+print 'JSON problem: ' + json.dumps(object)
 math = iterate(object)
 print 'Problem: ' + str(math)
 try:
     print 'Solution: ' + str(eval(math))
 except:
     print 'Invalid or malformed mathmatical problem'
+
+
+
 
