@@ -1,49 +1,46 @@
 #!/usr/bin/python
 import json
+import random
+import decimal
 
-
-
-keys = {}
-for i in range(,):
-    chars.append(str(chr(i)))
+keys = []
+for i in ('+','-','*','/'):
+    keys.append(i)
 keyLength = len(keys) - 1
-
 
 digits = []
 for i in range(40,57):
     digits.append(str(chr(i)))
 digitLength = len(digits) - 1
 
+def randomDecimal():
+    return decimal.Decimal(str(random.random()))
 
+def assignKey():
+    my_list = [True] * 90 + [False] * 10
+    return random.choice(my_list)
 
-
-# start at the top, treat every level the same.
-# Decide randomly - is this a key or a digit?
-# If it's a digit, it's tree ends there. If it's a key, it must produce underneath itself.
-# we can change the probability of key vs digit by weighing keys more heavily, so we get larger equations.
-
-
-object = {"+": [5, {"-":[9,'-']}]}
-
+def fillSpot():
+    if assignKey:
+        key = random.choice(keys)
+        object[key] = fillSpot
+        return object
+    else:
+        return randomDecimal
 
 def iterate(object):
     if isinstance(object,dict):
         for key, item in object.items():
             leftItem = item[0]
             rightItem = item[1]
-            if isinstance(leftItem,dict):
-                return iterate(item)
-            else:
-                return str(leftItem) + str(key) + str( iterate(rightItem) )
+            return str( iterate(leftItem) ) + str(key) + str( iterate(rightItem) )
     else:
-        return object
+        return str(object)
 
+object = fillSpot
 
-
-
-print 'JSON problem: ' + json.dumps(object)
 math = iterate(object)
-print 'Problem: ' + math
+print 'Problem: ' + str(math)
 try:
     print 'Solution: ' + str(eval(math))
 except:
