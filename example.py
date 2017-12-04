@@ -30,10 +30,10 @@ def assignKey():
 
 def fillSpot():
     if assignKey():
-        tmp = {}
         key = random.choice(keys)
         if key != '(':
             # Not paranthesis, means it's a mathimatical operator, so give two values.
+            tmp = {}
             tmp[key] = []
             tmp[key].append(fillSpot())
             tmp[key].append(fillSpot())
@@ -43,8 +43,6 @@ def fillSpot():
             tmp.append('(')
             tmp.append(fillSpot())
             tmp.append(')')
-
-
         return tmp
     else:
         return randomDecimal()
@@ -55,8 +53,14 @@ def iterate(object):
             leftItem = item[0]
             rightItem = item[1]
             return str( iterate(leftItem) ) + str(key) + str( iterate(rightItem) )
+    elif isinstance(object,list):
+        tmp = ''
+        for item in object:
+            tmp = tmp + iterate(item)
+        return tmp
     else:
         return str(object)
+
 
 def evaluate(math):
     try:
