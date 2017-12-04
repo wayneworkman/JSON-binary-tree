@@ -15,7 +15,7 @@ populationSize = 10
 
 
 keys = []
-for i in ('+','-','*','/'):
+for i in ('+','-','*','/','('):
     keys.append(i)
 
 digits = []
@@ -32,9 +32,19 @@ def fillSpot():
     if assignKey():
         tmp = {}
         key = random.choice(keys)
-        tmp[key] = []
-        tmp[key].append(fillSpot())
-        tmp[key].append(fillSpot())
+        if key != '(':
+            # Not paranthesis, means it's a mathimatical operator, so give two values.
+            tmp[key] = []
+            tmp[key].append(fillSpot())
+            tmp[key].append(fillSpot())
+        else:
+            # Something's gotta go between the paranthesies, and we need a closing paranthesis also.
+            tmp = []
+            tmp.append('(')
+            tmp.append(fillSpot())
+            tmp.append(')')
+
+
         return tmp
     else:
         return randomDecimal()
