@@ -11,7 +11,15 @@ decimalMinimum = -10
 decimalMaximum = 10
 decimalPlaces = 4
 
-populationSize = 10
+populationSize = 100
+
+
+
+inputs = ['111','222','333','444','555','666']
+
+
+expectedOutput = 1.21
+
 
 
 keys = []
@@ -23,13 +31,16 @@ for i in range(40,57):
     digits.append(str(chr(i)))
 
 def randomDecimal():
-    return round(random.uniform(decimalMinimum,decimalMaximum),decimalPlaces)
+    if randomBool():
+        return round(random.uniform(decimalMinimum,decimalMaximum),decimalPlaces)
+    else:
+        return random.choice(inputs)
 
-def assignKey():
+def randomBool():
     return bool(random.getrandbits(1))
 
 def fillSpot():
-    if assignKey():
+    if randomBool():
         key = random.choice(keys)
         if key != '(':
             # Not paranthesis, means it's a mathimatical operator, so give two values.
@@ -68,29 +79,78 @@ def evaluate(math):
     except:
         return False
 
-
-def generatePopulation():
-    population = []
+def generatePopulation(population=None):
+    if population is None:
+        population = []
     count = len(population)
     while True:
-        tmp = fillSpot()
-        if not isinstance(tmp,dict):
+        tree = fillSpot()
+        if not isinstance(tree,dict):
             continue
-        if evaluate(iterate(tmp)):
-            population.append(tmp)
+        answer = evaluate(iterate(tree))
+        if answer != False:
+            item = {}
+            item['tree'] = tree
+            item['answer'] = answer
             count = count + 1
+            population.append(item)
             if count >= populationSize:
                 break
     return population
 
 
+def gradeAnswer(answer):
+    if answer > expectedOutput:
+        return answer - expectedOutput
+    else:
+        return expectedOutput - answer
 
-population = generatePopulation()
+
+def gradePopulation(thePopulation):
+    for item in thePopulation:
+        if 'grade' not in item:
+            item['grade'] = gradeAnswer(item['answer'])
+    return thePopulation
 
 
-for item in population:
-    print ''
-    print iterate(item)
+def getGradeAverage(thePopulation):
+    x = 0
+    for item in thePopulation:
+        x = x + item['grade']
+    x = x / len(thePopulation)
+    return x
+
+def removeBelowAverage(thePopulation=None,theAverage=None):
+    for item in thePopulation:
+        if item['grade'] < theAverage:
+            thePopulation.remove(item)
+    return thePopulation
+
+
+while True:
+    population = generatePopulation()
+    population = gradePopulation(population)
+    average = getGradeAverage(population)
+    print 'Average population score: ' + str(getGradeAverage(population))
+    population = removeBelowAverage(thePopulation=population,theAverage=average)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
