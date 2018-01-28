@@ -146,30 +146,10 @@ while True:
     population = generatePopulation()
     population = gradePopulation(population)
     average = getGradeAverage(population)
+    print json.dumps(population)
     print 'Average score: ' + str(getGradeAverage(population))
-    population = removeBelowAverage(thePopulation=population,theAverage=average)
-    population = matePopulation(population)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    break
+    #population = removeBelowAverage(thePopulation=population,theAverage=average)
+    #population = matePopulation(population)
 
 
